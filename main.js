@@ -12,10 +12,6 @@ function svToObject(settings){
 	settings.textQualifier = escapeForRegex(settings.textQualifier);
 	var d = settings.dilemeter;
 	var tq = settings.textQualifier;
-
-	///////////////////////////////////////////////////////////////
-	/// This appears to be glitched
-	///////////////////////////////////////////////////////////////
 	var searchArray = [
 		"(?:"+tq+d+tq+")", // First case to search for, eg: ","
 		"(?:"+tq+d+")", // Second case to search for, eg: ",
@@ -23,23 +19,27 @@ function svToObject(settings){
 		"(?:"+d+")", // Last case to search for, eg: ,
 		"(?:"+tq+"$)", // if the text qualifier is the very last thing
 	];
+	// collapse the search array down to a regular expression
 	var regexString = "(?:"+searchArray.join('|')+')';
-	console.log(regexString)
 	var regex = new RegExp(regexString);
-
-
+	// If a filename was supplied, use that as the string.
 	if(settings.filename.length > 0)
 		settings.string = readFile(settings.filename);
+
+	// We want to analyze by line.
 	var splitContents = settings.string.split('\n');
+
+	// create an array of arrays containing the lines which have been split by the delemter
 	var parsedContents = [];
 	for (var i = 0; i < splitContents.length; i++) {
-		// console.log("");
-		console.log(splitContents[i]);
 		parsedContents.push(splitContents[i].split(regex));
 	};
-	// console.log(parsedContents[1])
 
+	// The headers are the first line of the csv file
 	var headers = parsedContents[0];
+
+	// Build the final array to return which will contain objects 
+	// mapped to the parts of the data by the header
 	var returnArray = [];
 	for (var i = 1; i < parsedContents.length; i++) {
 		var line = parsedContents[i];
@@ -56,31 +56,17 @@ function escapeForRegex(str){
 	 return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
 function readFile(filename){
-	return fs.readFileSync('./scripts/'+filename);
-}
-function processString(string, d, tq){
-
-
-	
-	return string.split(regex);
-
-	// The simpleton way
-	// var splitArray = string.split(tq+d+tq);
-	// var str = string.split(tq+d+tq); // First case to search for, eg: ","
-	// 	str = str.split(tq+d); // Second case to search for, eg: ",
-	// 	str = str.split(d+tq); // Third case to search for, eg: ,"
-	// 	str = str.split(d); // Last case to search for, eg: ,
-	// 	str = str.split(tq); // if the text qualifier is the very last thing
-
-	// return str;
+	return fs.readFileSync(filename);
 }
 
 module.exports = svToObject;
 
-
+// This is for testing.
 if(require.main === module) {
 	var testString = [
 		'h1|h2|h3|h4', // The first line will be the headers
+		'value 1|"Value 2"|value 3|"value - 4"',// This is the first row of data
+		'value 1|"Value 2"|value 3|"value - 4"',// This is the first row of data
 		'value 1|"Value 2"|value 3|"value - 4"'// This is the first row of data
 	];
 	console.log(svToObject({
@@ -88,6 +74,4 @@ if(require.main === module) {
 		textQualifier: '"',
 		string: testString.join('\n')
 	}));
-} else {
-	console.log("required as a module"); 
 }
