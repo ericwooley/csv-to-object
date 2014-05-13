@@ -1,6 +1,6 @@
 var _= require('underscore');
 var fs = require('fs');
-function svToObject(settings){
+function csvToObject(settings){
 	_.defaults(settings, {
 		dilemeter: ',',
 		textQualifier: '',
@@ -59,7 +59,7 @@ function readFile(filename){
 	return fs.readFileSync(filename);
 }
 
-module.exports = svToObject;
+module.exports = csvToObject;
 
 // This is for testing.
 if(require.main === module) {
@@ -69,7 +69,7 @@ if(require.main === module) {
 		'value 1|"Value 2"|value 3|"value - 4"',// This is the first row of data
 		'value 1|"Value 2"|value 3|"value - 4"'// This is the first row of data
 	];
-	console.log(svToObject({
+	console.log(csvToObject({
 		dilemeter: '|',
 		textQualifier: '"',
 		string: testString.join('\n')

@@ -1,4 +1,4 @@
-svToObject
+csv-to-object
 ==========
 
 transform a (c)sv file into a javascript object.
@@ -12,7 +12,7 @@ var testString = [
 	'h1|h2|h3|h4', // The first line will be the headers
 	'value 1|"Value 2"|value 3|"value - 5"'// This is the first row of data
 ];
-svToObject({
+csvToObject({
 	dilemeter: '|',
 	textQualifier: '"',
 	string: testString.join('\n')
