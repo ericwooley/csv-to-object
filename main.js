@@ -56,7 +56,7 @@ function escapeForRegex(str){
 	 return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
 function readFile(filename){
-	return fs.readFileSync(filename);
+	return fs.readFileSync(filename).toString();
 }
 
 module.exports = csvToObject;
@@ -69,9 +69,14 @@ if(require.main === module) {
 		'value 1|"Value 2"|value 3|"value - 4"',// This is the first row of data
 		'value 1|"Value 2"|value 3|"value - 4"'// This is the first row of data
 	];
-	console.log(csvToObject({
+	var t = csvToObject({
 		dilemeter: '|',
 		textQualifier: '"',
 		string: testString.join('\n')
-	}));
+	})
+	if(!(t[0]['h1'] == 'value 1' && t[1]['h2'] == 'Value 2' && t[2]['h3'] == 'value 3' && t[1]['h4'] == 'value - 4'))
+		throw new Error("incorrect results");
+	else
+		console.log("Passed!")
+
 }
