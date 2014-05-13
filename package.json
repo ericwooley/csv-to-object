@@ -1,0 +1,27 @@
+{
+  "name": "svToObject",
+  "version": "0.0.0",
+  "description": "Read a dilimted data file and turn it into a javascript object",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ericwooley/svToObject.git"
+  },
+  "keywords": [
+    "csv",
+    "object",
+    "read"
+  ],
+  "author": "Eric Wooley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ericwooley/svToObject/issues"
+  },
+  "homepage": "https://github.com/ericwooley/svToObject",
+  "dependencies": {
+    "underscore": "~1.6.0"
+  }
+}
